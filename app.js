@@ -25,23 +25,33 @@ gameInitialisation();
 // ROLLING DICE
 document.querySelector(".btn-roll").addEventListener("click", function() { //stil jquery cant be used
   if(gameState){
-    var dice = Math.floor((Math.random() * 6) + 1); //generates random score for dice whose scope is within this function
-    document.querySelector(".dice").style.display = "block";
-    document.querySelector(".dice").setAttribute("src", "dice-" + dice + ".png");
+    var firstDice = Math.floor((Math.random() * 6) + 1); //generates random score for dice whose scope is within this function
+    var secondDice = Math.floor((Math.random() * 6) + 1);
+    document.querySelectorAll(".dice")[0].style.display = "block";
+    document.querySelectorAll(".dice")[1].style.display = "block";
+    document.querySelectorAll(".dice")[0].setAttribute("src", "dice-" + firstDice + ".png");
+    document.querySelectorAll(".dice")[1].setAttribute("src", "dice-" + secondDice + ".png");
     //OR - document.querySelector(".dice").src("dice-"+dice+".png");
-    if(previousDice===6&&dice===6){
-      globalScore[activePerson]=0;
-      document.querySelector("#score-" + activePerson).textContent = "0";
-      nextPlayer();
-    }
-    else if(dice !== 1) {
-      roundScore += dice; //same as roundScore=roundScore+dice;
+
+    // ************CHALLENGE2******
+
+    // if(previousDice===6 && firstDice===6){
+    //   globalScore[activePerson]=0;
+    //   document.querySelector("#score-" + activePerson).textContent = "0";
+    //   nextPlayer();
+    // }
+    // else
+
+    // ***********CHALLENGE2******
+
+    if(firstDice !== 1 && secondDice !==1) {
+      roundScore += firstDice+secondDice; //same as roundScore=roundScore+dice;
       $("#current-" + activePerson).text(roundScore); //adds score generated randomly
     }
     else{
       nextPlayer();
     }
-    previousDice=dice;
+    // previousDice=dice;//CHALLENGE2
   }
 });
 
@@ -64,7 +74,8 @@ document.querySelector(".btn-hold").addEventListener("click", function() {
     document.querySelector("#score-" + activePerson).textContent = globalScore[activePerson];
     if (globalScore[activePerson] >= scoreLimit) {
       document.querySelector("#name-" + activePerson).textContent = "WINNER!";
-      document.querySelector(".dice").style.display = "none";
+      document.querySelectorAll(".dice")[0].style.display = "none";
+      document.querySelectorAll(".dice")[1].style.display = "none";
       document.querySelector(".player-" + activePerson + "-panel").classList.add("winner");
       document.querySelector(".player-" + activePerson + "-panel").classList.remove("active");
       gameState=false;
@@ -84,7 +95,8 @@ function gameInitialisation(){
   activePerson = 0;
   gameState=true;
   // $(".dice").style.display = "none"; //didnt work
-  document.querySelector(".dice").style.display = "none"; // so used DOM
+  document.querySelectorAll(".dice")[0].style.display = "none"; // so used DOM
+  document.querySelectorAll(".dice")[1].style.display = "none";
   document.getElementById("score-0").textContent = "0";
   document.getElementById("score-1").textContent = "0";
   document.getElementById("current-0").textContent = "0";
@@ -107,5 +119,6 @@ function nextPlayer() {
   document.getElementById("current-1").textContent = "0";
   document.querySelector(".player-0-panel").classList.toggle("active");
   document.querySelector(".player-1-panel").classList.toggle("active");
-  document.querySelector(".dice").style.display = "none";
+  document.querySelectorAll(".dice")[0].style.display = "none";
+  document.querySelectorAll(".dice")[1].style.display = "none";
 }
