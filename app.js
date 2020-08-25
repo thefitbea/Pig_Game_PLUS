@@ -7,33 +7,62 @@ GAME RULES:
 - The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
 - The first player to reach 100 points on GLOBAL score wins the game
 
+CHALLENGES:
+1.A player loses his entire score when he rolls two 6's in a row
+
+2.Take input from user to set what the game winning score is to be set to.
+
+3.Add another dice to the game so that players loses score if either dice is a 1.
+
 */
 
-var globalScore, roundScore, activePerson,gameState;
+
+var globalScore, roundScore, activePerson,gameState,previousDice,scoreLimit,scoreLimitDefault;
 
 gameInitialisation();
 
+
+// ROLLING DICE
 document.querySelector(".btn-roll").addEventListener("click", function() { //stil jquery cant be used
   if(gameState){
     var dice = Math.floor((Math.random() * 6) + 1); //generates random score for dice whose scope is within this function
     document.querySelector(".dice").style.display = "block";
-
     document.querySelector(".dice").setAttribute("src", "dice-" + dice + ".png");
     //OR - document.querySelector(".dice").src("dice-"+dice+".png");
-    if (dice !== 1) {
-      roundScore += dice; //same as roundScore=roundScore+dice;
-      $("#current-" + activePerson).text(roundScore); //adds score generated randomly
-    } else {
+    if(previousDice===6&&dice===6){
+      globalScore[activePerson]=0;
+      document.querySelector("#score-" + activePerson).textContent = "0";
       nextPlayer();
     }
+    else if(dice !== 1) {
+      roundScore += dice; //same as roundScore=roundScore+dice;
+      $("#current-" + activePerson).text(roundScore); //adds score generated randomly
+    }
+    else{
+      nextPlayer();
+    }
+    previousDice=dice;
   }
 });
 
+
+// HOLDING SCORE
 document.querySelector(".btn-hold").addEventListener("click", function() {
   if(gameState){
+
+    // SCORE LIMIT FETCH
+    scoreLimitDefault=100;//default value just in case user inputs nothing or large value.
+    scoreLimit=document.getElementById("winning-score").value;
+    if(scoreLimit){//0,undefined,null,"" returns false while anything else returns true
+      scoreLimit=document.getElementById("winning-score").value;
+    }
+    else{
+      scoreLimit=scoreLimitDefault;
+    }
+
     globalScore[activePerson] += roundScore; //OR we could PUSH into array, too you know;
     document.querySelector("#score-" + activePerson).textContent = globalScore[activePerson];
-    if (globalScore[activePerson] >= 100) {
+    if (globalScore[activePerson] >= scoreLimit) {
       document.querySelector("#name-" + activePerson).textContent = "WINNER!";
       document.querySelector(".dice").style.display = "none";
       document.querySelector(".player-" + activePerson + "-panel").classList.add("winner");
@@ -45,8 +74,10 @@ document.querySelector(".btn-hold").addEventListener("click", function() {
   }
 });
 
+// NEW GAME
 document.querySelector(".btn-new").addEventListener("click", gameInitialisation);
 
+// START GAME BY INITIALISING
 function gameInitialisation(){
   globalScore = [0, 0];
   roundScore = 0;
@@ -68,6 +99,7 @@ function gameInitialisation(){
   document.querySelector(".player-0-panel").classList.add("active");//we removed it to make sure that we don't have two classes being added, then added it back just in case if player 1 was having class "active"
 }
 
+//SWITCH PLAYERS
 function nextPlayer() {
   activePerson === 0 ? activePerson = 1 : activePerson = 0;
   roundScore = 0; //resetting score to zero

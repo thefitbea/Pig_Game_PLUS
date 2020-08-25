@@ -6,7 +6,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
+
 }
 
 .clearfix::after {
@@ -80,7 +80,7 @@ body {
     color: #EB4D4D;
     top: -7px;
     right: 10px;
-    
+
 }
 
 .player-current-box {
@@ -152,3 +152,29 @@ i {
 
 .winner { background-color: #f7f7f7; }
 .winner .player-name { font-weight: 300; color: #EB4D4D; }
+
+/* USER INPUT */
+
+.winning-limit{
+  margin: 0% 42% 0%;
+  padding: 1.75%;
+  font-family: 'Lato';
+  font-size: 1.125rem;
+}
+.winning-div{
+  background-color: white;
+  text-align: center;
+}
+.winning-input{
+  border-style: dotted;
+  border-color: #EB4D4D;
+}
+.winning-input:focus{
+  outline: none;
+}
+
+/* .submit-input{
+  border-style: hidden;
+  border-radius: 15%;
+  background-color: #EB4D4D;
+} */
